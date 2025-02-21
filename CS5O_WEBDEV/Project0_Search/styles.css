@@ -1,0 +1,279 @@
+    .image {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+    display: block;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    margin: 20px auto; /* Remove default margin */
+ }
+
+  .search-box {
+    width: 500px;               /* Large width similar to Google's */
+    height: 40px;               /* Set a taller height for a bigger input box */
+    padding: 10px;              /* Add padding for better text alignment */
+    font-size: 18px;            /* Larger text size for readability */
+    border-radius: 24px;        /* Rounded corners for a smooth look */
+    border: 1px solid #ccc;     /* Light border */
+    box-sizing: border-box;     /* Ensures padding and border are included in the total width */
+    display: block;             /* Make the input block-level for centering */
+    margin: 20px auto;          /* Center the search bar horizontally with auto margin */
+    outline: none;
+  }
+
+  .submit {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: #4A90E2;
+    color: white;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: background 0.3s ease-in-out;
+}
+
+.submit:hover {
+    background-color: #1565C0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.tag{
+    color: #4285f4;
+    font: 16px / 16px Arial, sans-serif;
+    position: relative;
+    left: 800px;
+    bottom: 0;
+    white-space: nowrap;
+}
+
+.appbar {
+    color: #d93025;
+    font-size: 20px;
+    margin: 25px 35px;
+}
+
+.line {
+    border-bottom: 1px solid #ebebeb;
+}
+
+.search-container{
+    width: 100%;
+    clear: both;
+}
+.search-header{
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    width: 16%;
+    font-size: 16px;
+    min-height: 42px;
+    font-weight: 500;
+    color: #333;
+    vertical-align: middle;
+}
+
+.search-instructions{
+    float: left;
+    display: inline-block;
+    width: 33%;
+    font-size: 13px;
+    font-weight: 700;
+    color: #777;
+    padding-left: 5px;
+    vertical-align: middle;
+}
+
+.instruction-text {
+     height: 30px; 
+     display: table-cell; 
+     vertical-align: middle; 
+}
+
+
+
+.spacer{ 
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    min-height: 41px;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.search-field{
+    clear: both;
+}
+
+.field-label{
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    width: 16%;
+    height: 42px;
+    color: #222;
+    font-size: 13px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+
+.box{
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    min-height: 41px;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.field-input{
+    padding-right: 16px;
+}
+
+.text-input{
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    font-size: 13px;
+    height: 25px;
+    padding: 1px 8px;
+    width: 100%;
+    text-align: left;
+}
+
+.instruct-build{
+    float: left;
+    display: inline-block;
+    width: 32%;
+    min-width: 160px;
+    margin: 0 0 8px 1%;
+    color: #555;
+    font-size: 11px;
+    padding-left: 5px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.example{
+    color: #666;
+    font-family: monospace;
+    font-size: 11px;
+    white-space: pre;
+}
+
+div.the-box {
+    max-width: 1140px;
+    min-width: 200px;
+    width: 96%;
+    margin: 40px 2% 0 45px;
+}
+
+.number-range-field{
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    min-height: 41px;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.range-inputs{
+    display: table;
+    width: 100%;
+}
+
+.range-box{
+    display: table-cell;
+    padding-right: 16px;
+}
+
+.range-separator{
+    display: table-cell;
+    width: 40px;
+    padding-right: 6px;
+    padding-left: 6px;
+    text-align: center;
+    font-size: 13px;
+    color: #202124;
+}
+
+.search-button-container{
+    float: left;
+    display: inline-block;
+    min-width: 167px;
+    min-height: 41px;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.search-button{
+    float: right;
+    margin: 10px 0;
+    -webkit-user-select: none;
+    user-select: none;
+    line-height: 100%;
+    height: 30px;
+    min-width: 120px;
+}
+
+.search-button:hover {
+    background-color: #357ae8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe), to(#357ae8));
+    background-image: -webkit-linear-gradient(top, #4d90fe, #357ae8);
+    background-image: -moz-linear-gradient(top, #4d90fe, #357ae8);
+    background-image: -ms-linear-gradient(top, #4d90fe, #357ae8);
+    background-image: -o-linear-gradient(top, #4d90fe, #357ae8);
+    background-image: linear-gradient(top, #4d90fe, #357ae8);ss
+    border: 1px solid #2f5bb7;
+    -webkit-border-image: initial;
+    border-image: initial;
+}
+
+.search-button{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background-color: #4d90fe;
+    background-image: -webkit-linear-gradient(top, #4d90fe, #4787ed);
+    background-image: -moz-linear-gradient(top, #4d90fe, #4787ed);
+    background-image: -ms-linear-gradient(top, #4d90fe, #4787ed);
+    background-image: -o-linear-gradient(top, #4d90fe, #4787ed);
+    background-image: linear-gradient(top, #4d90fe, #4787ed);
+    border: 1px solid #3079ed;
+    color: #fff;
+}
+
+.search-button-action:active {
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .3);
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .3);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .3);
+    background: #357ae8;
+    border: 1px solid #2f5bb7;
+    border-top: 1px solid #2f5bb7;
+}

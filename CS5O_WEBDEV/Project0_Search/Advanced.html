@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Search</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="Image.html">Image Search</a>
+            <a href="Advanced.html"> Advanced Search</a>
+        </div>
+    
+        <div class="appbar"> 
+            <label style="margin-left:10px">Advanced Search</label>    
+        </div>
+
+        <div class = "line" ></div>
+        <div class="the-box">
+            <form action ="https://www.google.com/search" method="get" id ="s1zaZb" method="get">
+                <div>
+                    <div class="search-container">
+                        <div class="search-header">
+                            <div class="instruction-text">
+                                <span>Find pages with...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spacer">&nbsp; </div>
+                        
+                        <div class="search-instructions">
+                            <div class="instruction-text">
+                                <span>To do this in the search box.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="search-container"> <!--first box-->
+
+                    <div class="search-field">
+                        <div class="field-label">
+                            <label for="all-words">All these words:</label>
+                        </div>
+                        <div class="box">
+                            <div class="field-input">
+                                <input class="text-input" id="all-words" name="as_q" type="text" autofocus>
+                            </div>
+                        </div>
+                        <div class = "instruct-build">
+                            <div class="instruction-text">
+                                <span class="instruct">Type the important words:</span> <span class="example">tri-colour rat terrier</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-container"> <!--second box-->
+
+                    <div class="search-field">
+                        <div class="field-label">
+                            <label for="all-words">this exact word or phrase:</label>
+                        </div>
+                        <div class="box">
+                            <div class="field-input">
+                                <input class="text-input" id="all-words" name="as_q" type="text" autofocus>
+                            </div>
+                        </div>
+                        <div class = "instruct-build">
+                            <div class="instruction-text">
+                                <span class="instruct">Put the exact words in quotes:</span> <span class="example">"rat terrier"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-container"> <!--third box-->
+
+                    <div class="search-field">
+                        <div class="field-label">
+                            <label for="all-words">any of these words:</label>
+                        </div>
+                        <div class="box">
+                            <div class="field-input">
+                                <input class="text-input" id="all-words" name="as_q" type="text" autofocus>
+                            </div>
+                        </div>
+                        <div class = "instruct-build">
+                            <div class="instruction-text">
+                                <span class="instruct">Type OR between all the words you want:</span> <span class="example">miniature OR standard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-container"> <!--fourth box-->
+
+                    <div class="search-field">
+                        <div class="field-label">
+                            <label for="all-words">none of these words:</label>
+                        </div>
+                        <div class="box">
+                            <div class="field-input">
+                                <input class="text-input" id="all-words" name="as_q" type="text" autofocus>
+                            </div>
+                        </div>
+                        <div class = "instruct-build">
+                            <div class="instruction-text">
+                                <span class="instruct">Put a minus sign just before words that you don't want:</span> <span class="example">-rodent, -"Jack Russell"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-container"> <!--fifth box-->
+
+                    <div class="search-field">
+                        <div class="field-label">
+                            <label for="all-words">numbers ranging from:</label>
+                        </div>
+
+                        <div class="number-range-field">
+                            <div class="range-inputs">
+                                <div class="range-box">
+                                    <input class="text-input" id="min-value" name="as_nlo" type="text">
+                                </div>
+                                <div class="range-separator">to</div>
+                                <div class="range-box">
+                                    <input class="text-input" id="max-value" name="as_nhi" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class = "instruct-build">
+                            <div class="instruction-text">
+                                <span class="instruct">Put two full stops between the numbers and add a unit of measurement:</span> <span class="example">10..35 kg, £300..£500, 2010..2011</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-button-container">
+                    <input id="search-filters" name="tbs" type="hidden" value="">
+                    <input class="search-button" value="Advanced Search" type="submit">
+                </div>
+
+            </form>
+        </div>
+    </body>
+</html>
+
