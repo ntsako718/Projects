@@ -1,0 +1,20 @@
+{% extends "Topwinz/layout.html" %}
+
+{% block content %}
+
+    {% if show_alert %}
+    <script>
+        alert('Login Successful');
+    </script>
+    {% endif %}
+
+    <h1>Welcome, {{ request.user.first_name}}</h1>
+
+    <ul>
+        <li>Username: {{ request.user.username }}</li>
+        <li>Email: {{request.user.email}} </li>
+    </ul>
+    <div class="container">
+        <a href="{% url 'Topwinz_app:logout' %}" class="logout-btn">Log out</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'Topwinz/layout.html' %}
+
+{% block content %}
+
+<body>
+    <h2 class="signup-heading">Sign Up</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+
+{% endblock %}

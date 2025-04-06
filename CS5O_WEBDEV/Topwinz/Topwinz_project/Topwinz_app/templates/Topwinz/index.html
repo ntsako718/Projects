@@ -1,0 +1,267 @@
+{% extends "Topwinz/layout.html" %}
+{% load custom_filters %}
+{% load static %}
+
+{% block title %} Topwinz {% endblock %}
+
+{% block content %}
+<div class="home_container">
+    <h1>Latest Raffle Baskets</h1>
+
+    <div class="tabs">
+        {% for raffle in raffles %}
+            <button class="tab-btn" onclick="showTab('{{ raffle.id }}')">
+                {{ raffle.name }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <div class="tab-content">
+        {% for raffle in raffles %}
+        <div id="tab-{{ raffle.id }}" class="tab">
+            <div class="raffle-gallery">
+                <img src="{{ raffle.image.url }}" alt="{{ raffle.name }}" class="raffle-image">
+            </div>
+            <h2>{{ raffle.name }}</h2>
+            <p><strong>Tickets Left:</strong> <span id="tickets-left-{{ raffle.id }}">{{ raffle.tickets_left }}</span></p>
+            <p><strong>Ticket Price:</strong> R{{ raffle.ticket_price }}</p>
+
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ raffle.tickets_percentage }}%;"></div>
+            </div>
+
+            
+            {% if raffle.tickets_left > 0 %}
+                <form id="buy-form-{{ raffle.id }}" method="post" action="{% url 'Topwinz_app:buy_ticket' raffle.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="buy-btn">Buy Ticket</button>
+                </form>
+            {% else %}
+                <p class="sold-out">Raffle Closed!</p>
+                
+                <!-- Countdown section -->
+                <div id="countdown-{{ raffle.id }}" style="display: {% if raffle.started and not raffle.ended %}block{% else %}none{% endif %};">
+                    <h3>Winner Reveal In:</h3>
+                    <p id="timer-{{ raffle.id }}">
+                        {% if raffle.start_time %}
+                            <!-- Initial display before JavaScript updates -->
+                            {% with time_left=raffle.countdown_seconds %}
+                                {{ time_left|divisibleby:60 }}m {{ time_left|modulo:60 }}s
+                            {% endwith %}
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <!-- Winner section -->
+                <div class="winner-reveal" style="display: {% if raffle.ended and raffle.winner %}block{% else %}none{% endif %};">
+                    <h2>And the winner is...</h2>
+                    <p id="winner-name-{{ raffle.id }}">
+                        {% if raffle.winner %}
+                            {{ raffle.winner.username }}
+                        {% endif %}
+                    </p>
+                    <button id="celebrate-{{ raffle.id }}" class="celebrate-btn">Celebrate!</button>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Function to show the clicked tab
+    function showTab(raffleId) {
+        const allTabs = document.querySelectorAll('.tab');
+        allTabs.forEach(tab => tab.style.display = 'none');
+        
+        const activeTab = document.getElementById('tab-' + raffleId);
+        if (activeTab) {
+            activeTab.style.display = 'block';
+        }
+    }
+
+    // Polling function to update countdown and ticket information
+    function startPolling(raffleId) {
+        // Your existing polling code...
+        const timerElement = document.getElementById('timer-' + raffleId);
+        const ticketsLeftElement = document.getElementById('tickets-left-' + raffleId);
+        const countdownSection = document.getElementById('countdown-' + raffleId);
+        const winnerSection = document.querySelector(`#tab-${raffleId} .winner-reveal`);
+        const winnerElement = document.getElementById('winner-name-' + raffleId);
+        const progressBar = document.querySelector(`#tab-${raffleId} .progress`);
+        
+        // Hide winner section initially (if not already hidden)
+        if (winnerSection) {
+            winnerSection.style.display = 'none';
+        }
+        
+        let serverCountdown = 0;
+        let pollTimestamp = Date.now();
+        let isWinnerSelected = false;
+
+        // Poll every 2 seconds
+        const pollIntervalId = setInterval(fetchStatus, 2000);
+        fetchStatus(); // Fetch immediately
+        
+        // Update local countdown every second for smoother display
+        const localTimerId = setInterval(updateLocalCountdown, 1000);
+
+        function fetchStatus() {
+            fetch(`/api/raffle/status/${raffleId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Error fetching raffle status");
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data || !data.status) return;
+                    const status = data.status;
+                    
+                    if (status.error) {
+                        console.error("Error:", status.error);
+                        return;
+                    }
+                    
+                    // Update tickets and progress
+                    if (ticketsLeftElement) {
+                        ticketsLeftElement.innerText = status.tickets_left;
+                    }
+                    
+                    if (progressBar) {
+                        progressBar.style.width = `${status.tickets_percentage}%`;
+                    }
+                    
+                    // Handle raffle states
+                    if (status.ended && status.winner_name) {
+                        // Winner has been selected
+                        isWinnerSelected = true;
+                        
+                        // Hide countdown, show winner
+                        if (countdownSection) {
+                            countdownSection.style.display = 'none';
+                        }
+                        
+                        if (winnerSection) {
+                            winnerSection.style.display = 'block';
+                            if (winnerElement) {
+                                winnerElement.innerText = status.winner_name;
+                            }
+                        }
+                        
+                        // Stop polling
+                        clearInterval(pollIntervalId);
+                        clearInterval(localTimerId);
+                    }
+                    else if (status.started) {
+                        // Countdown is active
+                        serverCountdown = status.countdown;
+                        pollTimestamp = Date.now();
+                        
+                        if (countdownSection) {
+                            countdownSection.style.display = 'block';
+                        }
+                        
+                        // If countdown reached zero but no winner yet
+                        if (serverCountdown <= 0 && !isWinnerSelected) {
+                            if (timerElement) {
+                                timerElement.innerText = "Selecting winner...";
+                            }
+                        }
+                    }
+                    else {
+                        // Raffle not started yet
+                        if (countdownSection) {
+                            countdownSection.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(error => console.error("Error fetching raffle status:", error));
+        }
+
+        function updateLocalCountdown() {
+            if (!timerElement || !serverCountdown) return;
+            
+            // Calculate local countdown based on server value
+            const elapsedSeconds = Math.floor((Date.now() - pollTimestamp) / 1000);
+            const localCountdown = Math.max(0, serverCountdown - elapsedSeconds);
+            
+            if (localCountdown > 0) {
+                const minutes = Math.floor(localCountdown / 60);
+                const seconds = localCountdown % 60;
+                timerElement.innerText = `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+            } else if (!isWinnerSelected) {
+                timerElement.innerText = "Selecting winner...";
+            }
+        }
+    }
+
+    // Start everything when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        // Start polling for each raffle
+        {% for raffle in raffles %}
+            startPolling({{ raffle.id }});
+        {% endfor %}
+        
+        // Show the first raffle tab by default
+        showTab('{{ raffles.first.id }}');
+        
+        // FORM HANDLING CODE MOVED INSIDE DOMContentLoaded
+        const buyForms = document.querySelectorAll('form[id^="buy-form-"]');
+        
+        buyForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent normal form submission
+                
+                const formAction = this.getAttribute('action');
+                const formData = new FormData(this);
+                
+                fetch(formAction, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the UI with the new data
+                        const raffleId = formAction.split('/').pop();
+                        const ticketsLeftEl = document.getElementById(`tickets-left-${raffleId}`);
+                        if (ticketsLeftEl) {
+                            ticketsLeftEl.textContent = data.raffle_status.tickets_left;
+                        }
+                        
+                        // If tickets are all sold out, update UI accordingly
+                        if (data.raffle_status.tickets_left === 0) {
+                            // Hide the buy button, show countdown, etc.
+                            this.style.display = 'none';
+                            const countdownEl = document.getElementById(`countdown-${raffleId}`);
+                            if (countdownEl) {
+                                countdownEl.style.display = 'block';
+                            }
+                        }
+                        
+                        // Show success message
+                        alert(data.message);
+                        
+                        // Refresh the page to update everything properly
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
+            });
+        });
+    });
+
+</script>
+
+<script src="{% static 'Topwinz_app/js/celebrate.js' %}"></script>
+{% endblock %}

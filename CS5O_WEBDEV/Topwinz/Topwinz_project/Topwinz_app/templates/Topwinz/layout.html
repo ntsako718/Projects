@@ -1,0 +1,47 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Topwinz{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Topwinz_app/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Topwinz</h1>
+        <nav>
+            <a href="{% url 'Topwinz_app:index' %}">
+                <img src="{% static 'Topwinz_app/images/TopWinzlogo.PNG' %}" alt="TopWinz Logo" class="logo">
+            </a>
+            <ul>
+                <li><a href="{% url 'Topwinz_app:about' %}">About</a></li>
+                <li><a href="#">Contact</a></li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'Topwinz_app:raffle_list' %}">Raffle Dashboard</a>
+                    </li>
+                {% endif %}
+                <li>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'Topwinz_app:details' %}">Profile</a>
+                    {% else %}
+                        <a href="{% url 'Topwinz_app:login' %}">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Topwinz. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>

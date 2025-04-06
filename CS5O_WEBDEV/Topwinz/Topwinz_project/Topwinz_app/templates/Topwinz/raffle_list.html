@@ -1,0 +1,73 @@
+{% extends 'Topwinz/layout.html' %}
+
+{% block content %}
+<h2>Active Raffles</h2>
+<table class="raffle-table">
+    <thead>
+        <tr>
+            <th>Raffle Name</th>
+            <th>Tickets Left</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for raffle in active_raffles %}
+        <tr>
+            <td>{{ raffle.name }}</td>
+            <td>{{ raffle.tickets_left }}</td>
+            <td>
+                <a href="{% url 'Topwinz_app:buy_ticket' raffle.id %}" class="btn-buy">Buy Ticket</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="text-center">No active raffles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Your Tickets</h2>
+<table class="raffle-table">
+    <thead>
+        <tr>
+            <th>Raffle Name</th>
+            <th>Purchase Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in user_tickets %}
+        <tr>
+            <td>{{ ticket.raffle.name }}</td>
+            <td>{{ ticket.purchased_at|date:"F j, Y, g:i a" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2" class="text-center">You haven't bought any tickets yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Past Raffles & Winners</h2>
+<table class="raffle-table">
+    <thead>
+        <tr>
+            <th>Raffle Name</th>
+            <th>Winner</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for raffle in completed_raffles %}
+        <tr>
+            <td>{{ raffle.name }}</td>
+            <td>{{ raffle.winner}}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2" class="text-center">No completed raffles yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
